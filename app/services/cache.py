@@ -1,9 +1,9 @@
 from fastapi import FastAPI
-from loguru import logger
-from app.core.settings.app import AppSettings
-
 from fastapi_cache import FastAPICache
 from fastapi_cache.backends.redis import RedisBackend
+from loguru import logger
+
+from app.core.settings.app import AppSettings
 
 
 def init_redis_cache(app: FastAPI, app_settings: AppSettings):

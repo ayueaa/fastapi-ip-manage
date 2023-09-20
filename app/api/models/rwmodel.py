@@ -1,8 +1,8 @@
 from datetime import datetime, timezone
 from typing import Any
 from zoneinfo import ZoneInfo
-from bson import ObjectId
 
+from bson import ObjectId
 from fastapi.encoders import jsonable_encoder
 from pydantic import BaseModel, ConfigDict, model_validator
 

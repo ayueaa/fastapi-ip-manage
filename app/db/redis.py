@@ -1,9 +1,9 @@
 from fastapi import FastAPI
 from loguru import logger
-from starlette.requests import Request
-from app.core.settings.app import AppSettings
-
 from redis import asyncio as aioredis
+from starlette.requests import Request
+
+from app.core.settings.app import AppSettings
 
 
 def register_redis_to_app(app: FastAPI, app_settings: AppSettings):

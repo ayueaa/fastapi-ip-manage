@@ -1,5 +1,3 @@
-
-
 from app.api.models.rwmodel import CustomModel
 
 

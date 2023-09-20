@@ -1,10 +1,9 @@
 import motor.motor_asyncio
-
 from fastapi import FastAPI
 from loguru import logger
 from starlette.requests import Request
-from app.core.config import get_app_settings
 
+from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
 
 
@@ -12,7 +11,8 @@ def register_mongodb_to_app(app: FastAPI, app_settings: AppSettings):
     @app.on_event("startup")
     async def connect_mongodb():
         mongo_client = motor.motor_asyncio.AsyncIOMotorClient(
-            app_settings.database_url, maxPoolSize=20)
+            app_settings.database_url, maxPoolSize=20
+        )
         app.state.mongo_client = mongo_client
         logger.info("Connected to mongodb.")
         return mongo_client
