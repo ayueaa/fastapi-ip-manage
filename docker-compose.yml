@@ -3,20 +3,30 @@ version: '3'
 services:
   app:
     build: .
+    dockerfile: Dockerfile
     restart: on-failure
     ports:
-      - "8000:8000"
+      - "8080:8080"
     environment:
-      DATABASE_URL: "postgresql://postgres:postgres@db/postgres"
+      DATABASE_URL: "mongodb://mongo:27017"
+      REDIS_URL: "redis://redis:6379"
     env_file:
       - .env
     depends_on:
-      - db
-  db:
-    image: postgres:11.5-alpine
+      - mongodb
+      - redis
+
+  mongo:
+    image: mongodb:latest
     ports:
-      - "5432:5432"
-    env_file:
-      - .env
+      - "27017:27017"
     volumes:
-      - ./postgres-data:/var/lib/postgresql/data:cached
+      - mongo_data:/data/db
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+  
+  volumes:
+    mongo_data:

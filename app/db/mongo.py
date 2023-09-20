@@ -1,12 +1,11 @@
-from ctypes import Union
-
 import motor.motor_asyncio
+
 from fastapi import FastAPI
 from loguru import logger
+from starlette.requests import Request
+from app.core.config import get_app_settings
 
 from app.core.settings.app import AppSettings
-
-mongo_client: motor.motor_asyncio.AsyncIOMotorClient = None
 
 
 def register_mongodb_to_app(app: FastAPI, app_settings: AppSettings):
@@ -20,6 +19,16 @@ def register_mongodb_to_app(app: FastAPI, app_settings: AppSettings):
 
     @app.on_event("shutdown")
     async def close_mongodb():
-        if hasattr(mongo_client, "close"):
-            mongo_client.close()
+        if hasattr(app.state.mongo_client, "close"):
+            app.state.mongo_client.close()
             logger.info("Disconnected mongodb.")
+
+
+async def get_history_coll(request: Request):
+    settings = get_app_settings()
+    return request.app.state.mongo_client[settings.db][settings.history_collection]
+
+
+async def get_visable_coll(request: Request):
+    settings = get_app_settings()
+    return request.app.state.mongo_client[settings.db][settings.visable_collection]

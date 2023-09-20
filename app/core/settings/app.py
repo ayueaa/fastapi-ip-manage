@@ -3,7 +3,7 @@ import sys
 from typing import Any, Dict, List, Tuple
 
 from loguru import logger
-from pydantic import MongoDsn, SecretStr
+from pydantic import SecretStr
 
 from app.core.logging import InterceptHandler
 from app.core.settings.base import BaseAppSettings
@@ -19,8 +19,12 @@ class AppSettings(BaseAppSettings):
     version: str = "0.0.0"
 
     database_url: str
+    db: str
+    visable_collection: str
+    history_collection: str
     max_connection_count: int = 10
     min_connection_count: int = 10
+    redis_url: str
 
     secret_key: SecretStr
 

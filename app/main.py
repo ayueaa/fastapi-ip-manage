@@ -8,6 +8,8 @@ from app.api.errors.validation_error import http422_error_handler
 from app.api.routes.api import router as api_router
 from app.core.config import get_app_settings
 from app.db.mongo import register_mongodb_to_app
+from app.db.redis import register_redis_to_app
+from app.services.cache import init_redis_cache
 
 
 def get_application() -> FastAPI:
@@ -25,6 +27,8 @@ def get_application() -> FastAPI:
         allow_headers=["*"],
     )
     register_mongodb_to_app(application, settings)
+    register_redis_to_app(application, settings)
+    init_redis_cache(application, settings)
 
     application.add_exception_handler(HTTPException, http_error_handler)
     application.add_exception_handler(RequestValidationError, http422_error_handler)
