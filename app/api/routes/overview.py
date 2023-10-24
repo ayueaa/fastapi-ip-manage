@@ -4,7 +4,9 @@ import motor.motor_asyncio
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
 
+from app.api.dependencies.auth import current_active_user, current_superuser
 from app.api.models.overview import OverviewResponse
+from app.api.models.user import User
 from app.db.mongo import get_history_coll, get_visable_coll
 
 router = APIRouter()
@@ -16,7 +18,9 @@ async def overview_hiostory(
     history_coll: motor.motor_asyncio.AsyncIOMotorCollection = Depends(
         get_history_coll
     ),
+    user: User = Depends(current_superuser),
 ):
+    print(user.email)
     now = datetime.now()
     today_midnight = datetime(now.year, now.month, now.day)
     last_7day_midnight = today_midnight - timedelta(days=7)
@@ -41,6 +45,7 @@ async def overview_visable(
     visable_coll: motor.motor_asyncio.AsyncIOMotorCollection = Depends(
         get_visable_coll
     ),
+    user: User = Depends(current_active_user),
 ):
     now = datetime.now()
     today_midnight = datetime(now.year, now.month, now.day)

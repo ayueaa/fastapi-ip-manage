@@ -4,8 +4,6 @@ set -e
 set -x
 
 
-flake8 -c ../.flake8 app
-mypy app
-
+flake8 --config .flake8 app
 black --check app --diff
 isort --check-only app

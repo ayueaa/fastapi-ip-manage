@@ -6,6 +6,8 @@ pydantic==2.3.0
 pydantic_settings==2.0.3
 pymongo==4.5.0
 starlette==0.31.1
+fastapi-users==12.1.2
+fastapi-users-db-beanie==3.0.0
 
 isort==5.9.3
 autoflake==2.2.1
