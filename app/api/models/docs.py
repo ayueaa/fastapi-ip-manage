@@ -1,10 +1,8 @@
-import ipaddress
 import datetime
-from typing import List, Optional, Union
-from beanie import PydanticObjectId
-from bson import ObjectId
+from typing import List
 
-from pydantic import Field, validator
+from beanie import PydanticObjectId
+from pydantic import Field
 
 from app.api.models.rwmodel import CustomModel
 

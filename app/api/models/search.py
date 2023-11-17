@@ -29,13 +29,13 @@ class IPExtrInfo(CustomModel):
     region: str
     regionName: str
     city: str
-    zip_field: str = Field(..., alias='zip')
+    zip_field: str = Field(..., alias="zip")
     lat: float
     lon: float
     timezone: str
     isp: str
     org: str
-    as_field: str = Field(..., alias='as')
+    as_field: str = Field(..., alias="as")
 
 
 class SearchHistoryResponse(SearchItem):

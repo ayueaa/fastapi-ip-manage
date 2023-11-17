@@ -74,13 +74,12 @@ async def overview_group(
     ),
     user: User = Depends(current_active_user),
 ):
-
     pipeline = [
         {"$group": {"_id": "$source", "count": {"$sum": 1}}},
-        {"$project": {"source": "$_id", "count": 1, "_id": 0}}
+        {"$project": {"source": "$_id", "count": 1, "_id": 0}},
     ]
     result = await history_coll.aggregate(pipeline).to_list(None)
-    return {doc['source']: doc['count'] for doc in result}
+    return {doc["source"]: doc["count"] for doc in result}
 
 
 @router.get("/group/tag", response_model=Dict[str, int], response_description="tag聚合")
@@ -94,14 +93,17 @@ async def overview_tag(
     pipeline = [
         {"$unwind": "$raw_tags"},
         {"$group": {"_id": "$raw_tags", "count": {"$sum": 1}}},
-        {"$project": {"tag": "$_id", "count": 1, "_id": 0}}
+        {"$project": {"tag": "$_id", "count": 1, "_id": 0}},
     ]
     result = await history_coll.aggregate(pipeline).to_list(None)
-    return {doc['tag']: doc['count'] for doc in result}
+    return {doc["tag"]: doc["count"] for doc in result}
 
 
-@router.get("/7daycount/history", response_model=List[CountGroupResponse],
-            response_description="最近七日历史情报更新数量")
+@router.get(
+    "/7daycount/history",
+    response_model=List[CountGroupResponse],
+    response_description="最近七日历史情报更新数量",
+)
 @cache(expire=60 * 10)
 async def overview_7_days_history_count(
     history_coll: motor.motor_asyncio.AsyncIOMotorCollection = Depends(
@@ -109,13 +111,15 @@ async def overview_7_days_history_count(
     ),
     user: User = Depends(current_active_user),
 ):
-
     results = await agg_recent_days_count(recent_days=7, coll=history_coll)
     return results
 
 
-@router.get("/7daycount/visable", response_model=List[CountGroupResponse],
-            response_description="最近七日唯一IP情报更新数量")
+@router.get(
+    "/7daycount/visable",
+    response_model=List[CountGroupResponse],
+    response_description="最近七日唯一IP情报更新数量",
+)
 @cache(expire=60 * 10)
 async def overview_7_days_visable_count(
     visable_coll: motor.motor_asyncio.AsyncIOMotorCollection = Depends(
@@ -123,6 +127,5 @@ async def overview_7_days_visable_count(
     ),
     user: User = Depends(current_active_user),
 ):
-
     results = await agg_recent_days_count(recent_days=7, coll=visable_coll)
     return results

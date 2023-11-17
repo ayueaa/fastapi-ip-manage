@@ -5,7 +5,8 @@ from fastapi import Depends, Request
 from fastapi_users import (BaseUserManager, FastAPIUsers,
                            InvalidPasswordException)
 from fastapi_users.authentication import (AuthenticationBackend,
-                                          CookieTransport, JWTStrategy, BearerTransport)
+                                          BearerTransport, CookieTransport,
+                                          JWTStrategy)
 from fastapi_users_db_beanie import BeanieUserDatabase, ObjectIDIDMixin
 from loguru import logger
 

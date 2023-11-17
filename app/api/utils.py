@@ -1,6 +1,6 @@
-
 from datetime import datetime, timedelta
 from typing import List, Union
+
 import motor.motor_asyncio
 import requests
 
@@ -8,8 +8,7 @@ from app.api.models.overview import CountGroupResponse
 
 
 async def agg_recent_days_count(
-    recent_days: int,
-    coll: motor.motor_asyncio.AsyncIOMotorCollection
+    recent_days: int, coll: motor.motor_asyncio.AsyncIOMotorCollection
 ) -> List[CountGroupResponse]:
     """聚合指定情报库最近天数的每日增长数量
 
@@ -27,41 +26,31 @@ async def agg_recent_days_count(
     # 构建聚合查询
     pipeline = [
         {
-            '$match': {
-                'last_seen': {
-                    '$gte': int(last_7day_midnight.timestamp())  # 获取时间戳并转换为整数
+            "$match": {
+                "last_seen": {
+                    "$gte": int(last_7day_midnight.timestamp())  # 获取时间戳并转换为整数
                 }
             }
         },
         {
-            '$project': {
-                'date': {
-                    '$toDate': {
-                        '$multiply': ['$last_seen', 1000]  # 将时间戳转换为毫秒
-
+            "$project": {
+                "date": {"$toDate": {"$multiply": ["$last_seen", 1000]}}  # 将时间戳转换为毫秒
+            }
+        },
+        {
+            "$group": {
+                "_id": {
+                    "$dateToString": {
+                        "format": "%Y%m%d",
+                        "date": "$date",
+                        "timezone": "Asia/Shanghai",
                     }
-                }
-            }
-        },
-        {
-            '$group': {
-                '_id': {
-                    '$dateToString': {'format': '%Y%m%d', 'date': '$date',
-                                      'timezone': 'Asia/Shanghai'}
                 },
-                'count': {'$sum': 1}
+                "count": {"$sum": 1},
             }
         },
-        {
-            '$sort': {'_id': 1}
-        },
-        {
-            '$project': {
-                'date': '$_id',
-                '_id': 0,  # 不显示原始的_id字段
-                'count': 1
-            }
-        }
+        {"$sort": {"_id": 1}},
+        {"$project": {"date": "$_id", "_id": 0, "count": 1}},  # 不显示原始的_id字段
     ]
 
     # 执行聚合查询
@@ -78,7 +67,7 @@ def get_ip_info(ip_address) -> Union[dict, None]:
     Returns:
         _type_: None or json
     """
-    url = f'http://ip-api.com/json/{ip_address}'
+    url = f"http://ip-api.com/json/{ip_address}"
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()
