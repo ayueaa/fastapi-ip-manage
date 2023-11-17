@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
-
+# 格式化代码
 set -e
 
+# import 语句进行排序和分组,符合pep8
 isort --force-single-line-imports app
 autoflake --recursive --remove-all-unused-imports --remove-unused-variables --in-place app
+# 自动缩进行宽和引号统一
 black app
 isort app

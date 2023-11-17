@@ -2,7 +2,7 @@ import ipaddress
 from datetime import datetime
 from typing import List, Union
 
-from pydantic import validator
+from pydantic import Field, validator
 
 from app.api.models.rwmodel import CustomModel
 
@@ -23,6 +23,21 @@ class SearchVisableResponse(SearchItem):
         return value
 
 
+class IPExtrInfo(CustomModel):
+    country: str
+    countryCode: str
+    region: str
+    regionName: str
+    city: str
+    zip_field: str = Field(..., alias='zip')
+    lat: float
+    lon: float
+    timezone: str
+    isp: str
+    org: str
+    as_field: str = Field(..., alias='as')
+
+
 class SearchHistoryResponse(SearchItem):
     source: str
     last_seen: datetime
@@ -38,3 +53,4 @@ class SearchHistoryResponse(SearchItem):
 class SearchResponse(CustomModel):
     visable: SearchVisableResponse
     history: List[SearchHistoryResponse] = []
+    extro: IPExtrInfo = {}

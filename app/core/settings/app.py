@@ -22,6 +22,7 @@ class AppSettings(BaseAppSettings):
     db: str
     visable_collection: str
     history_collection: str
+    docs_collection: str
     max_connection_count: int = 10
     min_connection_count: int = 10
     redis_url: str

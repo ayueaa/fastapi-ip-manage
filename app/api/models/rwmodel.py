@@ -21,7 +21,7 @@ class CustomModel(BaseModel):
     model_config = ConfigDict(
         json_encoders={datetime: convert_datetime_to_gmt, ObjectId: str},
         populate_by_name=True,
-        # alias_generator=convert_datetime_to_realworld
+        allow_population_by_field_name=True
     )
 
     def serializable_dict(self, **kwargs):
