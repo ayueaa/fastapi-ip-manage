@@ -37,3 +37,8 @@ async def get_visable_coll(request: Request):
 async def get_docs_coll(request: Request):
     settings = get_app_settings()
     return request.app.state.mongo_client[settings.db][settings.docs_collection]
+
+
+async def get_user_coll(request: Request):
+    settings = get_app_settings()
+    return request.app.state.mongo_client[settings.db]["User"]

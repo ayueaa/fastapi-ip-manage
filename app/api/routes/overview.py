@@ -4,6 +4,7 @@ from typing import Dict, List
 import motor.motor_asyncio
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
+import psutil
 
 from app.api.dependencies.auth import current_active_user
 from app.api.models.overview import CountGroupResponse, OverviewResponse
@@ -129,3 +130,15 @@ async def overview_7_days_visable_count(
 ):
     results = await agg_recent_days_count(recent_days=7, coll=visable_coll)
     return results
+
+
+@router.get("/system-info")
+@cache(expire=60 * 1)
+async def get_system_info():
+    system_info = {
+        "cpu_percent": psutil.cpu_percent(interval=1),
+        "memory_usage": psutil.virtual_memory()._asdict(),
+        "disk_usage": psutil.disk_usage('/')._asdict(),
+        "network_stats": psutil.net_io_counters()._asdict()
+    }
+    return system_info

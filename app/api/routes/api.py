@@ -2,7 +2,7 @@ from fastapi import APIRouter
 
 from app.api.dependencies.auth import auth_backend, fastapi_users
 from app.api.models.auth import UserCreate, UserRead, UserUpdate
-from app.api.routes import documents, overview, search
+from app.api.routes import documents, overview, search, user
 
 router = APIRouter()
 router.include_router(overview.router, tags=["overview"], prefix="/overview")
@@ -29,6 +29,11 @@ router.include_router(
 )
 router.include_router(
     fastapi_users.get_users_router(UserRead, UserUpdate),
+    prefix="/users",
+    tags=["users"],
+)
+router.include_router(
+    user.router,
     prefix="/users",
     tags=["users"],
 )

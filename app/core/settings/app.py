@@ -26,6 +26,7 @@ class AppSettings(BaseAppSettings):
     max_connection_count: int = 10
     min_connection_count: int = 10
     redis_url: str
+    virustotal_api_key: str
 
     secret_key: SecretStr
 
