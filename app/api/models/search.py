@@ -1,6 +1,6 @@
 import ipaddress
-from datetime import datetime
 import re
+from datetime import datetime
 from typing import Dict, List, Union
 
 from pydantic import BaseModel, Field, validator
@@ -64,7 +64,7 @@ class VtIPParams(BaseModel):
     def valid_ip(cls, ioc):
         ioc = ioc.strip()
         domain_pattern = re.compile(
-            r'^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$'
+            r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$"
         )
         if domain_pattern.match(ioc) or cls.is_valid_ip(ioc):
             return ioc

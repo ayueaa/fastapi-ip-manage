@@ -5,7 +5,8 @@ from fastapi import APIRouter, Depends
 from loguru import logger
 
 from app.api.errors.http_error import NotFound404Error
-from app.api.models.search import SearchItem, SearchResponse, VtIPParams, VtSearchResponse
+from app.api.models.search import (SearchItem, SearchResponse, VtIPParams,
+                                   VtSearchResponse)
 from app.api.utils import get_ip_info
 from app.core.config import get_app_settings
 from app.core.settings.app import AppSettings
@@ -52,8 +53,11 @@ async def ip_search(
     )
 
 
-@router.get("/virustotal/ip/{ioc}", response_model=VtSearchResponse,
-            response_description="ip情报查询")
+@router.get(
+    "/virustotal/ip/{ioc}",
+    response_model=VtSearchResponse,
+    response_description="ip情报查询",
+)
 async def vt_search(
     ioc: str,
     validated_ioc: VtIPParams = Depends(),
@@ -63,19 +67,21 @@ async def vt_search(
     result = vt_client.auto_search(ioc)
 
     result_sort_order = {
-        'malicious': 1,
-        'suspicious': 2,
-        'harmless': 3,
-        'undetected': 4
+        "malicious": 1,
+        "suspicious": 2,
+        "harmless": 3,
+        "undetected": 4,
     }
 
     # 对字典项排序
     sorted_items = sorted(
         result["attributes"]["last_analysis_results"].items(),
-        key=lambda item: result_sort_order.get(item[1]['category'], 999))
+        key=lambda item: result_sort_order.get(item[1]["category"], 999),
+    )
 
     # 转换回字典（如果需要）
     result["attributes"]["last_analysis_results"] = {
-        key: value for key, value in sorted_items}
+        key: value for key, value in sorted_items
+    }
 
     return result

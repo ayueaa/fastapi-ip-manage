@@ -2,9 +2,9 @@ from datetime import datetime, timedelta
 from typing import Dict, List
 
 import motor.motor_asyncio
+import psutil
 from fastapi import APIRouter, Depends
 from fastapi_cache.decorator import cache
-import psutil
 
 from app.api.dependencies.auth import current_active_user
 from app.api.models.overview import CountGroupResponse, OverviewResponse
@@ -138,7 +138,7 @@ async def get_system_info():
     system_info = {
         "cpu_percent": psutil.cpu_percent(interval=1),
         "memory_usage": psutil.virtual_memory()._asdict(),
-        "disk_usage": psutil.disk_usage('/')._asdict(),
-        "network_stats": psutil.net_io_counters()._asdict()
+        "disk_usage": psutil.disk_usage("/")._asdict(),
+        "network_stats": psutil.net_io_counters()._asdict(),
     }
     return system_info

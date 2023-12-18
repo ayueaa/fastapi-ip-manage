@@ -1,7 +1,9 @@
 import ipaddress
 import re
 from typing import Any, Dict, Optional
+
 import requests
+
 from app.api.models.search import VtSearchResponse
 
 virustotal_api_key = "b78bfd6ad30746179616bca7690fee2e6ef230d9e297ff202457a0a34b7534ca"
@@ -14,11 +16,10 @@ class VtClient:
 
     def __init__(self, api_key: str):
         self.api_key: str = api_key
-        self.headers: Dict[str, str] = {'x-apikey': self.api_key}
+        self.headers: Dict[str, str] = {"x-apikey": self.api_key}
 
     def _make_request(
-        self, endpoint: str,
-        params: Optional[Dict[str, Any]] = None
+        self, endpoint: str, params: Optional[Dict[str, Any]] = None
     ) -> VtSearchResponse:
         """执行请求的通用方法"""
         url: str = f"{self.BASE_URL}{endpoint}"
@@ -27,7 +28,7 @@ class VtClient:
         return {
             "ioc": data.get("id"),
             "ioc_type": data.get("type"),
-            "attributes": data.get("attributes")
+            "attributes": data.get("attributes"),
         }
 
     def get_ip_report(self, ip: str) -> VtSearchResponse:
@@ -43,7 +44,7 @@ class VtClient:
     def auto_search(self, ioc: str) -> VtSearchResponse:
         ioc = ioc.strip()
         pattern = re.compile(
-            r'^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$'
+            r"^(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{2,6}$"
         )
         if pattern.match(ioc):
             return self.get_domain_report(ioc)

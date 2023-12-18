@@ -1,8 +1,7 @@
 from typing import List
+
 from beanie import Document
 from fastapi_users.db import BeanieBaseUser, BeanieUserDatabase
-from fastapi_users_db_beanie import BeanieBaseUserDocument
-from pydantic import Field
 
 from app.api.models.rwmodel import CustomModel
 
