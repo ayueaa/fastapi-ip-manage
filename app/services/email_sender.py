@@ -4,6 +4,8 @@ from email.mime.text import MIMEText
 import aiosmtplib
 from loguru import logger
 
+from app.core.config import get_app_settings
+
 
 class EmailSender:
     def __init__(self, smtp_server, smtp_port, smtp_username, smtp_password):
@@ -37,12 +39,11 @@ class EmailSender:
             logger.error(f"邮件发送{to_email}失败,error: {e}")
 
 
-smtp_server = "smtp.gmail.com"
-smtp_port = 465
-smtp_username = "woyue02@gmail.com"
-smtp_password = "tfmttduwpqezmvjk"
+settings = get_app_settings()
 
-aio_email_sender = EmailSender(smtp_server, smtp_port, smtp_username, smtp_password)
+
+aio_email_sender = EmailSender(
+    settings.smtp_server, settings.smtp_port, settings.smtp_username, settings.smtp_password)
 
 # 使用示例
 if __name__ == "__main__":
@@ -50,14 +51,14 @@ if __name__ == "__main__":
 
     smtp_server = "smtp.gmail.com"
     smtp_port = 465
-    smtp_username = "woyue02@gmail.com"
-    smtp_password = "tfmttduwpqezmvjk"
+    smtp_username = "username"
+    smtp_password = "password"
 
     sender = EmailSender(smtp_server, smtp_port, smtp_username, smtp_password)
 
     from_email = smtp_username
-    to_email = "woyue02@gmail.com"
-    subject = "转发备忘"
-    body = "邮件备忘：闹钟提醒"
+    to_email = "xx@gmail.com"
+    subject = "test"
+    body = "test content"
 
     asyncio.run(sender.send(from_email, to_email, subject, body))

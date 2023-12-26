@@ -38,6 +38,10 @@ class AppSettings(BaseAppSettings):
 
     logging_level: int = logging.INFO
     loggers: Tuple[str, str] = ("uvicorn.asgi", "uvicorn.access")
+    smtp_server: str = "smtp.gmail.com"
+    smtp_port: int = 465
+    smtp_username: str
+    smtp_password: str
 
     class Config:
         validate_assignment = True
